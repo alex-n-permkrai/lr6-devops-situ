@@ -11,13 +11,6 @@
 
 ## Стек 1: Flask + Redis (машина 10.0.0.100)
 
-### Структура проекта
-devops9compose/
-├── app.py
-├── requirements.txt
-├── Dockerfile
-└── compose.yaml
-
 text
 
 ### Файлы
@@ -30,24 +23,18 @@ text
 - **compose.yaml** — два сервиса: `web` (Flask, порт 8000:5000) и `redis` (официальный образ).
 
 ### Запуск
-```bash
+
 cd devops9compose
 docker compose up -d --build
-Проверка:
 
-bash
+### Проверка:
+
 curl http://10.0.0.100:8000              # счётчик
 curl http://10.0.0.100:8000/metrics      # метрики для Prometheus
-Стек 2: Мониторинг (машина 10.0.0.110)
-Структура проекта
-text
-devops9prom/
-├── compose.yaml
-├── prometheus/
-│   └── prometheus.yml
-└── grafana/
-    └── datasource.yml
-Файлы
+
+## Стек 2: Мониторинг (машина 10.0.0.110)
+
+### Файлы
 compose.yaml — сервисы:
 prometheus (порт 9090), конфиг монтируется из ./prometheus.
 grafana (порт 3000, логин admin/grafana), автонастройка источника данных через ./grafana.
@@ -59,11 +46,11 @@ view_total — прямой сбор метрик с http://10.0.0.100:8000/metr
 grafana/datasource.yml — автоматическое добавление источника Prometheus (http://prometheus:9090) с именем Prometheus.
 
 Запуск
-bash
+
 cd devops9prom
 docker compose up -d
-Интерфейсы:
 
+Интерфейсы:
 Prometheus: http://10.0.0.110:9090
 Grafana: http://10.0.0.110:3000 (admin / grafana)
 
